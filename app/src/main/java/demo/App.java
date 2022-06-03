@@ -14,7 +14,7 @@ public class App {
                 .useStorageProvider(new InMemoryStorageProvider())
                 .useBackgroundJobServer()
                 .initialize();
-        scheduleJob1();
+        scheduleJob3();
     }
 
     private static void scheduleJob1() {
@@ -23,6 +23,16 @@ public class App {
 
     private static void scheduleJob2() {
         scheduleRecurrently("job2", "*/5 * * * * *", () -> System.out.println("Job 2 " + getNow()));
+    }
+
+    private static void scheduleJob3() {
+        scheduleRecurrently("job3", "*/5 * * * * *", Job3::fetchAndHandleNewRecords);
+    }
+
+    public static class Job3 {
+        public void fetchAndHandleNewRecords() {
+            System.out.println("Job 3 " + LocalDateTime.now()); // now the date will be updated on each run.
+        }
     }
 
     public static LocalDateTime getNow() {
